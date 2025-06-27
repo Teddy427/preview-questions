@@ -16,16 +16,19 @@ def calc (i, j, _theta):
     v_theta_dagger = np.conjugate(v_theta.T)
     return np.dot(v_theta_dagger, np.dot(P[int(j)], v_theta))
 
-plt.figure(figsize = (12, 12), dpi = 80)
+plt.figure(figsize = (18, 12), dpi = 80)
 
 X = np.linspace(-2*np.pi, 2*np.pi, 256, dtype = complex)
 for j in range(3):
-    plt.subplot(3, 1, j+1)
     for k in range(3):
+        plt.subplot(3, 3, j*3+k+1)
+        plt.xlim(-2.2*np.pi, 2.2*np.pi)
+        plt.ylim(-1.1, 1.1)
+        plt.xticks(np.linspace(-2*np.pi, 2*np.pi, 5))
         Y = np.ones(256, dtype = complex)
         for i in range(256):
             Y[i] = calc(j, k, X[i])[0][0]
         plt.plot(X, Y, linewidth = 2.5,
                  label = r'$\hat{P} = \sigma_{%s}, \hat{Q} = \sigma_{%s}$' % (name[j], name[k]))
-    plt.legend(loc = "upper left")
+        plt.legend(loc = "upper left")
 plt.show()
