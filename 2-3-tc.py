@@ -4,26 +4,25 @@ import tensorcircuit as tc
 
 K = tc.set_backend("tensorflow")
 
-P = [tc.gates._x_matrix, tc.gates._y_matrix, tc.gates._z_matrix]
-name = ['x', 'y', 'z']
+name = ['i', 'x', 'y', 'z']
 
 def calc (i, j, _theta):
     c = tc.Circuit(1)
-    if i == 0:
+    if i == 1:
         c.rx(0, theta = -_theta)
-    elif i == 1:
+    elif i == 2:
         c.ry(0, theta = -_theta)
     else:
         c.rz(0, theta = -_theta)
-    return c.expectation([P[j], [0]])
+    return c.expectation([tc.gates.matrix_for_gate(tc.gates.pauli_gates[j]), [0]])
 
 X = np.linspace(-2*np.pi, 2*np.pi, 256)
 Y = np.empty((256), dtype = complex)
 plt.figure(figsize = (12, 8), dpi = 80)
 
-for i in range(3):
-    for j in range(3):
-        plt.subplot(3, 3, 3*i+j+1)
+for i in range(1,4):
+    for j in range(1,4):
+        plt.subplot(3, 3, 3*i+j-3)
         plt.xlim(-2.2*np.pi, 2.2*np.pi)
         plt.ylim(-1.1, 1.1)
         plt.xticks(np.linspace(-2*np.pi, 2*np.pi, 5))
